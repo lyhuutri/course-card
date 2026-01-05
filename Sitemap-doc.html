@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tài liệu học tập về Sitemap trong UX/UI Design">
+  <title>Sitemap trong UX/UI Design</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f9fafb;
+      line-height: 1.6;
+    }
+
+    /* Main Container */
+    .sitemap-container {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+
+    /* Header Banner */
+    .header-banner {
+      background: linear-gradient(to right, #2563eb, #4f46e5);
+      color: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .header-title h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+    }
+
+    .header-subtitle {
+      color: #bfdbfe;
+      margin-top: 0.5rem;
+    }
+
+    /* Section Container */
+    .section-container {
+      margin-bottom: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background-color: white;
+    }
+
+    .section-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: linear-gradient(to right, #eff6ff, #eef2ff);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    .section-header:hover {
+      background: linear-gradient(to right, #dbeafe, #e0e7ff);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: #2563eb;
+    }
+
+    .section-title h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .chevron-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: #4b5563;
+      transition: transform 0.2s;
+    }
+
+    .section-header.active .chevron-icon {
+      transform: rotate(90deg);
+    }
+
+    .section-content {
+      padding: 1.5rem;
+      background-color: white;
+      display: none;
+    }
+
+    .section-content.active {
+      display: block;
+    }
+
+    /* Text Content */
+    .text-content {
+      color: #374151;
+      line-height: 1.625;
+    }
+
+    .content-spacing {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .highlight-text {
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    /* Info Box */
+    .info-box {
+      background-color: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem;
+      border-radius: 0.25rem;
+    }
+
+    /* Types Section */
+    .type-item {
+      padding-left: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .type-green {
+      border-left: 4px solid #22c55e;
+    }
+
+    .type-purple {
+      border-left: 4px solid #a855f7;
+    }
+
+    .type-orange {
+      border-left: 4px solid #f97316;
+    }
+
+    .type-title-green {
+      font-weight: 600;
+      color: #15803d;
+      margin-bottom: 0.5rem;
+    }
+
+    .type-title-purple {
+      font-weight: 600;
+      color: #7e22ce;
+      margin-bottom: 0.5rem;
+    }
+
+    .type-title-orange {
+      font-weight: 600;
+      color: #c2410c;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Elements Section */
+    .element-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background-color: #f9fafb;
+      border-radius: 0.5rem;
+    }
+
+    .element-number {
+      width: 2rem;
+      height: 2rem;
+      background-color: #dbeafe;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    .element-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.25rem;
+    }
+
+    .element-desc {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+
+    /* Benefits Section */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .benefit-card {
+      background-color: #f0fdf4;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #bbf7d0;
+    }
+
+    .benefit-title {
+      font-weight: 600;
+      color: #166534;
+      margin-bottom: 0.5rem;
+    }
+
+    .benefit-desc {
+      color: #374151;
+      font-size: 0.875rem;
+    }
+
+    /* Steps Section */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 2rem;
+      padding-bottom: 1.5rem;
+      border-left: 2px solid #93c5fd;
+    }
+
+    .step-last {
+      padding-bottom: 0;
+    }
+
+    .step-dot {
+      position: absolute;
+      left: -0.5rem;
+      top: 0;
+      width: 1rem;
+      height: 1rem;
+      background-color: #3b82f6;
+      border-radius: 50%;
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-desc {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+
+    /* Example Section */
+    .example-container {
+      background-color: #f9fafb;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e7eb;
+      overflow-x: auto;
+    }
+
+    .example-content {
+      display: inline-block;
+      min-width: 100%;
+      text-align: center;
+    }
+
+    .homepage-box {
+      display: inline-block;
+      background-color: #2563eb;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .example-connector {
+      font-size: 1.5rem;
+      color: #9ca3af;
+      margin-bottom: 0.5rem;
+    }
+
+    .example-parent-pages {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .parent-page {
+      background-color: #22c55e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .example-child-pages {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .child-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .child-page {
+      background-color: #c084fc;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+    }
+
+    /* Tools Section */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tool-card {
+      border: 1px solid #e5e7eb;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      transition: box-shadow 0.2s;
+    }
+
+    .tool-card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .tool-title {
+      font-weight: 600;
+      color: #2563eb;
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-desc {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+
+    /* Best Practices Section */
+    .practice-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .practice-check {
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: #facc15;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+      color: white;
+      font-size: 0.75rem;
+    }
+
+    .practice-title {
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .practice-desc {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+
+    /* Resources Section */
+    .resources-section {
+      margin-top: 2rem;
+      background: linear-gradient(to right, #eef2ff, #eff6ff);
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      border: 1px solid #c7d2fe;
+    }
+
+    .resources-title {
+      font-weight: 600;
+      color: #312e81;
+      margin-bottom: 0.75rem;
+    }
+
+    .resources-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: #374151;
+    }
+
+    .resources-list li::before {
+      content: "• ";
+    }
+
+    /* SVG Icons */
+    svg {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="sitemap-container">
+    <!-- Header -->
+    <div class="header-banner">
+      <div class="header-title">
+        <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+          <line x1="9" y1="3" x2="9" y2="18"></line>
+          <line x1="15" y1="6" x2="15" y2="21"></line>
+        </svg>
+        <h1>Sitemap trong UX/UI Design</h1>
+      </div>
+      <p class="header-subtitle">Tài liệu học tập chi tiết về Sitemap</p>
+    </div>
+
+    <!-- Section 1: Giới thiệu -->
+    <div class="section-container">
+      <button class="section-header active" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <h2>Giới thiệu</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content active">
+        <p class="text-content">
+          Sitemap là một công cụ quan trọng trong quá trình thiết kế UX/UI, giúp visualize cấu trúc và tổ chức thông tin của website hoặc ứng dụng. Đây là bước đầu tiên trong việc xây dựng kiến trúc thông tin (Information Architecture).
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 2: Sitemap là gì? -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+            <line x1="9" y1="3" x2="9" y2="18"></line>
+            <line x1="15" y1="6" x2="15" y2="21"></line>
+          </svg>
+          <h2>Sitemap là gì?</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="content-spacing">
+          <p class="text-content">
+            <span class="highlight-text">Sitemap</span> là sơ đồ trực quan thể hiện cấu trúc phân cấp của tất cả các trang và phần trong một website hoặc ứng dụng. Nó cho thấy mối quan hệ giữa các trang và cách người dùng có thể điều hướng qua hệ thống.
+          </p>
+          <div class="info-box">
+            <p class="text-content">
+              <strong>Mục đích chính:</strong> Giúp team thiết kế, phát triển và stakeholders hiểu được luồng thông tin và cấu trúc tổng thể của sản phẩm.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Các loại Sitemap -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+          <h2>Các loại Sitemap</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="content-spacing">
+          <div class="type-item type-green">
+            <h3 class="type-title-green">1. Visual Sitemap</h3>
+            <p class="text-content">Sơ đồ trực quan dùng cho team thiết kế và phát triển, thể hiện cấu trúc phân cấp bằng hình ảnh và kết nối.</p>
+          </div>
+          <div class="type-item type-purple">
+            <h3 class="type-title-purple">2. XML Sitemap</h3>
+            <p class="text-content">File XML dành cho công cụ tìm kiếm (SEO), giúp Google và các search engines index website.</p>
+          </div>
+          <div class="type-item type-orange">
+            <h3 class="type-title-orange">3. HTML Sitemap</h3>
+            <p class="text-content">Trang web dành cho người dùng cuối, liệt kê tất cả các trang quan trọng để dễ dàng điều hướng.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Các thành phần của Sitemap -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <h2>Các thành phần của Sitemap</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="content-spacing">
+          <div class="element-item">
+            <div class="element-number">1</div>
+            <div>
+              <h4 class="element-title">Homepage/Trang chủ</h4>
+              <p class="element-desc">Điểm khởi đầu, cấp độ cao nhất trong hierarchy</p>
+            </div>
+          </div>
+          <div class="element-item">
+            <div class="element-number">2</div>
+            <div>
+              <h4 class="element-title">Parent Pages (Trang cha)</h4>
+              <p class="element-desc">Các trang chính, categories lớn</p>
+            </div>
+          </div>
+          <div class="element-item">
+            <div class="element-number">3</div>
+            <div>
+              <h4 class="element-title">Child Pages (Trang con)</h4>
+              <p class="element-desc">Trang phụ thuộc, subcategories</p>
+            </div>
+          </div>
+          <div class="element-item">
+            <div class="element-number">4</div>
+            <div>
+              <h4 class="element-title">Utility Pages</h4>
+              <p class="element-desc">Trang tiện ích như About, Contact, Privacy Policy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Lợi ích của Sitemap -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <h2>Lợi ích của Sitemap</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <h4 class="benefit-title">✓ Tổ chức rõ ràng</h4>
+            <p class="benefit-desc">Giúp visualize toàn bộ cấu trúc website trước khi thiết kế</p>
+          </div>
+          <div class="benefit-card">
+            <h4 class="benefit-title">✓ Giao tiếp hiệu quả</h4>
+            <p class="benefit-desc">Tool để team và client cùng thống nhất về cấu trúc</p>
+          </div>
+          <div class="benefit-card">
+            <h4 class="benefit-title">✓ Phát hiện vấn đề sớm</h4>
+            <p class="benefit-desc">Nhận diện gaps, redundancy, hay navigation issues</p>
+          </div>
+          <div class="benefit-card">
+            <h4 class="benefit-title">✓ Hỗ trợ SEO</h4>
+            <p class="benefit-desc">Giúp search engines crawl và index website tốt hơn</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Các bước tạo Sitemap -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <h2>Các bước tạo Sitemap</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="steps-container">
+          <div class="step-item">
+            <div class="step-dot"></div>
+            <h4 class="step-title">Bước 1: Research & Thu thập thông tin</h4>
+            <p class="step-desc">Nghiên cứu mục tiêu người dùng, business goals, content inventory</p>
+          </div>
+          <div class="step-item">
+            <div class="step-dot"></div>
+            <h4 class="step-title">Bước 2: Xác định các trang chính</h4>
+            <p class="step-desc">Liệt kê tất cả các trang và phân loại theo category</p>
+          </div>
+          <div class="step-item">
+            <div class="step-dot"></div>
+            <h4 class="step-title">Bước 3: Tạo hierarchy</h4>
+            <p class="step-desc">Sắp xếp trang theo cấu trúc phân cấp logic</p>
+          </div>
+          <div class="step-item">
+            <div class="step-dot"></div>
+            <h4 class="step-title">Bước 4: Vẽ sơ đồ</h4>
+            <p class="step-desc">Sử dụng tool để visualize (Figma, Miro, Sketch...)</p>
+          </div>
+          <div class="step-item step-last">
+            <div class="step-dot"></div>
+            <h4 class="step-title">Bước 5: Review & Iterate</h4>
+            <p class="step-desc">Xem xét với team và stakeholders, điều chỉnh nếu cần</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 7: Ví dụ Sitemap cho E-commerce -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+          <h2>Ví dụ Sitemap cho E-commerce</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="example-container">
+          <div class="example-content">
+            <div class="homepage-box">Homepage</div>
+            <div class="example-connector">└─┬─┬─┬─┬─┘</div>
+            <div class="example-parent-pages">
+              <div class="parent-page">Sản phẩm</div>
+              <div class="parent-page">Giỏ hàng</div>
+              <div class="parent-page">Tài khoản</div>
+              <div class="parent-page">Blog</div>
+              <div class="parent-page">Liên hệ</div>
+            </div>
+            <div class="example-child-pages">
+              <div class="child-group">
+                <div class="child-page">Danh mục A</div>
+                <div class="child-page">Danh mục B</div>
+                <div class="child-page">Chi tiết SP</div>
+              </div>
+              <div class="child-group">
+                <div class="child-page">Thanh toán</div>
+                <div class="child-page">Xác nhận</div>
+              </div>
+              <div class="child-group">
+                <div class="child-page">Đăng nhập</div>
+                <div class="child-page">Đăng ký</div>
+                <div class="child-page">Hồ sơ</div>
+              </div>
+              <div class="child-group">
+                <div class="child-page">Bài viết</div>
+                <div class="child-page">Danh mục</div>
+              </div>
+              <div class="child-group">
+                <div class="child-page">Form liên hệ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 8: Công cụ tạo Sitemap -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+          <h2>Công cụ tạo Sitemap</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h4 class="tool-title">Figma / FigJam</h4>
+            <p class="tool-desc">Tool thiết kế phổ biến, có sẵn templates</p>
+          </div>
+          <div class="tool-card">
+            <h4 class="tool-title">Miro</h4>
+            <p class="tool-desc">Whiteboard online, tốt cho collaboration</p>
+          </div>
+          <div class="tool-card">
+            <h4 class="tool-title">Lucidchart</h4>
+            <p class="tool-desc">Chuyên về flowcharts và sơ đồ</p>
+          </div>
+          <div class="tool-card">
+            <h4 class="tool-title">Slickplan</h4>
+            <p class="tool-desc">Tool chuyên dụng cho sitemap</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 9: Best Practices -->
+    <div class="section-container">
+      <button class="section-header" onclick="toggleSection(this)">
+        <div class="section-title">
+          <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <h2>Best Practices</h2>
+        </div>
+        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <div class="section-content">
+        <div class="content-spacing">
+          <div class="practice-item">
+            <div class="practice-check">✓</div>
+            <div>
+              <h4 class="practice-title">Giữ đơn giản và dễ hiểu</h4>
+              <p class="practice-desc">Tránh quá phức tạp, mỗi cấp độ nên rõ ràng</p>
+            </div>
+          </div>
+          <div class="practice-item">
+            <div class="practice-check">✓</div>
+            <div>
+              <h4 class="practice-title">Tuân theo quy tắc 3-click</h4>
+              <p class="practice-desc">Users nên đến được mọi trang trong 3 clicks</p>
+            </div>
+          </div>
+          <div class="practice-item">
+            <div class="practice-check">✓</div>
+            <div>
+              <h4 class="practice-title">Sử dụng naming convention nhất quán</h4>
+              <p class="practice-desc">Tên trang phải rõ ràng, mô tả đúng nội dung</p>
+            </div>
+          </div>
+          <div class="practice-item">
+            <div class="practice-check">✓</div>
+            <div>
+              <h4 class="practice-title">Xem xét scalability</h4>
+              <p class="practice-desc">Cấu trúc phải dễ mở rộng khi thêm nội dung mới</p>
+            </div>
+          </div>
+          <div class="practice-item">
+            <div class="practice-check">✓</div>
+            <div>
+              <h4 class="practice-title">Test với users</h4>
+              <p class="practice-desc">Card sorting và tree testing để validate cấu trúc</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="resources-section">
+      <h3 class="resources-title">📚 Tài nguyên học thêm</h3>
+      <ul class="resources-list">
+        <li>Nielsen Norman Group - Information Architecture</li>
+        <li>Don't Make Me Think by Steve Krug</li>
+        <li>Information Architecture for the Web and Beyond</li>
+        <li>UX Design courses trên Coursera, Udemy</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleSection(button) {
+      const container = button.parentElement;
+      const content = container.querySelector('.section-content');
+
+      button.classList.toggle('active');
+      content.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
